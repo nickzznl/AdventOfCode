@@ -28,7 +28,18 @@
             while (_hasMoved)
             {
                 fileInputInCharArray = MoveSeaCucumbers(fileInputInCharArray);
-                Console.WriteLine(fileInputInCharArray);
+
+                //only to check for myself inside test no actual use case
+                for (int i = 0; i < _maxY; i++)
+                {
+                    for (int j = 0; j < _maxX; j++)
+                    {
+                        Console.Write(fileInputInCharArray[i, j] + "\t");
+                    }
+                    Console.WriteLine('\t');
+                }
+
+                Console.WriteLine('\t');
 
                 stepsTaken++;
             }
@@ -41,7 +52,7 @@
             //char[,] firstResult = new char[_maxY, _maxX];
             _hasMoved = false;
 
-            var firstResult = CreateCharArray(initialInput, null);
+            var resultMoveEast = CreateCharArray(initialInput, null);
 
 
             //loop through each line in the file
@@ -51,23 +62,23 @@
                 for(int j = 0; j < _maxX; j++)
                 {
                     //fill lines so that values that don't move are still filled with correct values
-                    if (firstResult[i, j] == 0)
+                    if (resultMoveEast[i, j] == 0)
                     {
-                        firstResult[i, j] = initialInput[i, j];
+                        resultMoveEast[i, j] = initialInput[i, j];
                     }
                     //all characters other then last, since that one should move back to first char
                     if (j < _maxX - 1 && initialInput[i, j] == '>' && initialInput[i, j + 1] == '.')
                     {
-                        firstResult[i,j] = '.';
-                        firstResult[i,j + 1] = '>';
+                        resultMoveEast[i,j] = '.';
+                        resultMoveEast[i,j + 1] = '>';
 
                         _hasMoved = true;
                     }
                     //movement for last char
                     if (j == _maxX - 1 && initialInput[i, j] == '>' && initialInput[i, 0] == '.')
                     {
-                        firstResult[i, j] = '.';
-                        firstResult[i, 0] = '>';
+                        resultMoveEast[i, j] = '.';
+                        resultMoveEast[i, 0] = '>';
 
                         _hasMoved = true;
                     }
@@ -75,7 +86,7 @@
                 }
             }
 
-            var secondResult = CreateCharArray(firstResult, null);
+            var resultMoveSouth = CreateCharArray(resultMoveEast, null);
 
             //loop through each line in the file
             for (int i = 0; i < _maxY; i++)
@@ -83,29 +94,29 @@
                 //loop through each char in the line
                 for (int j = 0; j < _maxX; j++)
                 {
-                    if (secondResult[i, j] == 0)
+                    if (resultMoveSouth[i, j] == 0)
                     {
-                        secondResult[i, j] = firstResult[i, j];
+                        resultMoveSouth[i, j] = resultMoveEast[i, j];
                     }
-                    if (i < _maxY - 1 && firstResult[i, j] == 'v' && firstResult[i + 1, j] == '.')
+                    if (i < _maxY - 1 && resultMoveEast[i, j] == 'v' && resultMoveEast[i + 1, j] == '.')
                     {
-                        secondResult[i,j] = '.';
-                        secondResult[i + 1,j] = 'v';
+                        resultMoveSouth[i,j] = '.';
+                        resultMoveSouth[i + 1,j] = 'v';
 
                         _hasMoved = true;
                     }
 
-                    if (i == _maxY - 1 && firstResult[i, j] == 'v' && firstResult[0, j] == '.')
+                    if (i == _maxY - 1 && resultMoveEast[i, j] == 'v' && resultMoveEast[0, j] == '.')
                     {
-                        secondResult[i, j] = '.';
-                        secondResult[0, j] = 'v';
+                        resultMoveSouth[i, j] = '.';
+                        resultMoveSouth[0, j] = 'v';
 
                         _hasMoved = true;
                     }
                 }
             }
 
-            return secondResult;
+            return resultMoveSouth;
         }
 
         private char[,]? CreateCharArray(char[,]? charArray, string[]? stringArray)
