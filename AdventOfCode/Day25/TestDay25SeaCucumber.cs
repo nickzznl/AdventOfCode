@@ -11,10 +11,10 @@ namespace AdventOfCode.Day25
         public void ShouldReturnCorrectValueIfMovementIsWithinLimits(string fileLocation, int expectedResult)
         {
             //Arrange
-            var sut = new Day25SeaCucumber();
+            var sut = new _2ndVersionDay25();
 
             //Act
-            var actualResult = sut.GetStepsUntilNoMoreMovesCanBeMade(fileLocation);
+            var actualResult = sut.GetStepsUntilMovementStops(fileLocation);
 
             //Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
